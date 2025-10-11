@@ -2,34 +2,39 @@
 #include<string.h>
 #include<stdbool.h>
 #include<ctype.h>
-int area()
+void printestimator(int estimated_price,int total_price)  //It prints the estimated price and total price
 {
-    int a;
+    printf("\nThe estimated price is ");
+    printf("\n₹%d-₹%d",estimated_price,total_price);
+}
+int getarea()                                             //It takes the input of the area from the user
+{
+    int area;
     printf("\nEnter the area of property in square feet ");
-    scanf("%d",&a);
+    scanf("%d",&area);
     while(getchar() != '\n');
-    return a;
+    return area;
 }
-int rooms()
+int getrooms()                                           //It takes the input of no of rooms from the user
 {
-    int r;
+    int rooms;
     printf("\nEnter no of rooms ");
-    scanf("%d",&r);
+    scanf("%d",&rooms);
     while(getchar() != '\n');
-    return r;
+    return rooms;
 }
-int diff(int total_price)
+int estimator(int total_price)                        //It caluacte the 5% error of the price calculator making the range of property
 {
     int estimate=total_price*0.05;
     return total_price-estimate;
 }
-int pricecalculator(int price_per_squarefeet,int price_per_room,int area_property,int no_room){
+int pricecalculator(int price_per_squarefeet,int price_per_room,int area_property,int no_room){ //It calucates the price    
     int total_price;
     total_price=area_property*price_per_squarefeet;
     total_price+=price_per_room*no_room;
     return total_price;
 }
-bool Check(char cityname1[100],char cityname2[100])
+bool Check(char cityname1[100],char cityname2[100])    //It checks the input command matches the desired one
 {
     if(strlen(cityname1)!=strlen(cityname2))
     {
@@ -45,7 +50,7 @@ bool Check(char cityname1[100],char cityname2[100])
     }
     return true;
 }
-int main()
+int main()                    //Main function of the program
 {
     char cityname[100];
     printf("\nWelcome to property price estimator\n");
@@ -67,50 +72,46 @@ int main()
             int no_room;
             if(Check(cityname,"Delhi"))
             {
-                no_room=rooms();
-                int area_property=area();
+                no_room=getrooms();
+                int area_property=getarea();
                 int price_per_squarefoot=10000;
                 int price_per_room=1000;
                 int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
-                int estimated_price=diff(total_price);
-                printf("\nThe estimated price is ");
-                printf("\n₹%d-₹%d",estimated_price,total_price);
+                int estimated_price=estimator(total_price);
+                printestimator(estimated_price,total_price);
                 city_valid=1;
             }
             else if(Check(cityname,"Mumbai"))
             {
-                no_room=rooms();
-                int area_property=area();
+                no_room=getrooms();
+                int area_property=getarea();
                 int price_per_squarefoot=22000;
                 int price_per_room=2200;
                 int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
-                int estimated_price=diff(total_price);
-                printf("\nThe estimated price is ");
-                printf("\n₹%d-₹%d",estimated_price,total_price);
+                int estimated_price=estimator(total_price);
+                printestimator(estimated_price,total_price);
                 city_valid=1;
             }
             else if(Check(cityname,"Chennai"))
             {
-                no_room=rooms();
-                int area_property=area();
+                no_room=getrooms();
+                int area_property=getarea();
                 int price_per_squarefoot=8543;
                 int price_per_room=855;
                 int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
-                int estimated_price=diff(total_price);
-                printf("\nThe estimated price is ");
-                printf("\n₹%d-₹%d",estimated_price,total_price);
+                int estimated_price=estimator(total_price);
+                printestimator(estimated_price,total_price);
                 city_valid=1;
             }
             else if(Check(cityname,"Bengaluru"))
             {
-                no_room=rooms();
-                int area_property=area();
+                no_room=getrooms();
+                int area_property=getarea();
                 int price_per_squarefoot=15200;
                 int price_per_room=1520;
                 int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
-                int estimated_price=diff(total_price);
-                printf("\nThe estimated price is ");
-                printf("\n₹%d-₹%d",estimated_price,total_price);
+                int estimated_price=estimator(total_price);
+                printestimator(estimated_price,total_price);
                 city_valid=1;
             }
             else 
