@@ -2,6 +2,7 @@
 #include<string.h>
 #include<stdbool.h>
 #include<ctype.h>
+#include <unistd.h>// for implementing delay
 void printestimator(int estimated_price,int total_price)  //It prints the estimated price and total price
 {
     printf("\nThe estimated price is ");
@@ -54,11 +55,13 @@ int main()                    //Main function of the program
 {
     char cityname[100];
     printf("\nWelcome to property price estimator\n");
+    sleep(1);
     for(int i=0;i<40;i++)
     {
         printf("-");
     }
     printf("\nRightnow only four cities are available:-\nThe cities are as follows\n1.Delhi\n2.Mumbai\n3.Chennai\n4.Bengaluru");
+    sleep(2);
     char choice[50]="0";
     do
     {
@@ -68,12 +71,15 @@ int main()                    //Main function of the program
             printf("\nEnter the city name from the above mentioned cities ");
             fgets(cityname,sizeof(cityname),stdin);
             cityname[strcspn(cityname,"\n")]='\0';
-            printf("\nEnterd city name is %s ",cityname);
             int no_room;
             if(Check(cityname,"Delhi"))
             {
+                printf("\nEnterd city name is Delhi ");
+                sleep(1);
                 no_room=getrooms();
+                sleep(1);
                 int area_property=getarea();
+                sleep(1);
                 int price_per_squarefoot=10000;
                 int price_per_room=1000;
                 int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
@@ -83,8 +89,12 @@ int main()                    //Main function of the program
             }
             else if(Check(cityname,"Mumbai"))
             {
+                printf("\nEnterd city name is Mumbai ");
+                sleep(1);
                 no_room=getrooms();
+                sleep(1);
                 int area_property=getarea();
+                sleep(1);
                 int price_per_squarefoot=22000;
                 int price_per_room=2200;
                 int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
@@ -94,8 +104,12 @@ int main()                    //Main function of the program
             }
             else if(Check(cityname,"Chennai"))
             {
+                printf("\nEnterd city name is Chennai ");
+                sleep(1);
                 no_room=getrooms();
+                sleep(1);
                 int area_property=getarea();
+                sleep(1);
                 int price_per_squarefoot=8543;
                 int price_per_room=855;
                 int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
@@ -105,8 +119,12 @@ int main()                    //Main function of the program
             }
             else if(Check(cityname,"Bengaluru"))
             {
+                printf("\nEnterd city name is Bengluru ");
+                sleep(1);
                 no_room=getrooms();
+                sleep(1);
                 int area_property=getarea();
+                sleep(1);
                 int price_per_squarefoot=15200;
                 int price_per_room=1520;
                 int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
@@ -116,6 +134,7 @@ int main()                    //Main function of the program
             }
             else 
             {
+                printf("\nEnterd city name is %s ",cityname);
                 printf("\nEntered Name is wrong.\nPlease recheck and enter again");
             }
         }    
