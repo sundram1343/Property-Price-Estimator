@@ -1,48 +1,107 @@
-#include<stdio.h>
-#include<string.h>
-#include<stdbool.h>
-#include<ctype.h>
-#include <unistd.h>// for implementing delay
-void printestimator(int estimated_price,int total_price)  //It prints the estimated price and total price
+#include<iostream>
+#include<string>
+#include<vector>
+#include<unistd.h>
+using namespace std;
+class Node
 {
-    printf("\nThe estimated price is ");
-    printf("\n₹%d-₹%d",estimated_price,total_price);
-}
-int getarea()                                             //It takes the input of the area from the user
+    public:
+    int val;
+    Node*next;
+    Node(int data)
+    {
+        val=data;
+        next=NULL;
+    }
+};
+class ListNode
 {
-    int area;
-    printf("\nEnter the area of property in square feet ");
-    scanf("%d",&area);
-    while(getchar() != '\n');
-    return area;
-}
-int getrooms()                                           //It takes the input of no of rooms from the user
-{
+    Node*head;
+    Node*tail;
+    public:
+    ListNode()
+    {
+        head=tail=NULL;
+    }
+    void push(int val)
+    {
+        Node*newNode=new Node(val);
+        if(head==NULL){
+            head=newNode;
+            tail=head;
+        }
+        else{   
+            tail->next=newNode;
+            newNode->next=NULL;
+        }
+    }
+    Node*gethead()
+    {
+        return head;
+    }
+};
+class PropertyData{
+    private:
     int rooms;
-    printf("\nEnter no of rooms ");
-    scanf("%d",&rooms);
-    while(getchar() != '\n');
-    return rooms;
-}
-int estimator(int total_price)                        //It caluacte the 5% error of the price calculator making the range of property
-{
-    int estimate=total_price*0.05;
-    return total_price-estimate;
-}
-int pricecalculator(int price_per_squarefeet,int price_per_room,int area_property,int no_room){ //It calucates the price    
-    int total_price;
-    total_price=area_property*price_per_squarefeet;
-    total_price+=price_per_room*no_room;
+    int area;
+    public:
+    void read(int r,int a){
+        rooms=r;
+        area=a;
+    }
+    int getarea()
+    {
+        int a=0;
+        while (a<=0)
+        {
+            cout<<"\nEnter the area of the property in square feet ";
+            cin>>a;
+            if(a<=0)
+            {
+                cout<<"\nEnter a vaild value.Please try again ";
+            }
+        }   
+        return a;
+    }
+    int getrooms()
+    {
+        int r=0;
+        while(r<=0)
+        {
+            cout<<"\nEnter the no of rooms ";
+            cin>>r;
+            if(r<=0)
+            {
+                cout<<"\nEnter a vaild value.Please try again ";
+            }
+        }
+        return r;
+    }
+    void getdata(vector<int>&data)
+    {
+        area=getarea();
+        data.push_back(area);
+        sleep(1);
+        rooms=getrooms();
+        data.push_back(rooms);
+        sleep(1);
+    }
+};
+int Price_Calculator(Node*head,vector<int>data){
+    Node*ptr=head;
+    int total_price=0;
+    total_price+=(ptr->val)*data[0];
+    ptr=ptr->next;
+    total_price+=(ptr->val)*data[1];
     return total_price;
 }
-bool Check(char cityname1[100],char cityname2[100])    //It checks the input command matches the desired one
+bool Check(string cityname1,string cityname2)
 {
-    if(strlen(cityname1)!=strlen(cityname2))
+    if(cityname1.size()!=cityname2.size())
     {
         return false;
     }
-    int n=strlen(cityname1);
-    for(int i=0;i<n;i++)
+    for(int i=0;i<cityname1.size();i++)
     {
         if(tolower(cityname1[i])!=tolower(cityname2[i]))
         {
@@ -51,104 +110,118 @@ bool Check(char cityname1[100],char cityname2[100])    //It checks the input com
     }
     return true;
 }
-int main()                    //Main function of the program
+int main()
 {
-    char cityname[100];
-    printf("\nWelcome to property price estimator\n");
+    string cityname;
+    cout<<"\nWelcome to property price estimator ";
+    cout<<"\n";
     sleep(1);
-    for(int i=0;i<40;i++)
+    for(int i=0;i<60;i++)
     {
-        printf("-");
+        cout<<"-";
     }
-    printf("\nRightnow only four cities are available:-\nThe cities are as follows\n1.Delhi\n2.Mumbai\n3.Chennai\n4.Bengaluru");
+    cout<<"\nRightnow only four cities are available\nThe cities are as follows:-\n1.Delhi\n2.Mumbai\n3.Chennai\n4.Bengaluru";
     sleep(2);
-    char choice[50]="0";
+    string Choice;
     do
     {
-        int city_valid=0;
-        while(city_valid!=1)
+        vector<int>data;
+        PropertyData d;
+        d.getdata(data);
+        int valid_city=0;
+        while(valid_city!=1)
         {
-            printf("\nEnter the city name from the above mentioned cities ");
-            fgets(cityname,sizeof(cityname),stdin);
-            cityname[strcspn(cityname,"\n")]='\0';
-            int no_room;
+            cout<<"\nEnter the City name from the above  mentioned cities ";
+            cin>>cityname;
+            sleep(1);
             if(Check(cityname,"Delhi"))
             {
-                printf("\nEnterd city name is Delhi ");
+                cout<<"\nEntered city name is Delhi ";
+                ListNode Delhi;
+                Delhi.push(10000);
+                Delhi.push(1000);
+                int total_price=Price_Calculator(Delhi.gethead(),data);
+                int error =total_price*0.05;
+                int estimated_price=total_price-error;
                 sleep(1);
-                no_room=getrooms();
-                sleep(1);
-                int area_property=getarea();
-                sleep(1);
-                int price_per_squarefoot=10000;
-                int price_per_room=1000;
-                int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
-                int estimated_price=estimator(total_price);
-                printestimator(estimated_price,total_price);
-                city_valid=1;
+                cout<<"\nThe estimated price of the property wih the data is ₹"<<estimated_price<<" - "<<"₹"<<total_price;
+                valid_city=1;
             }
             else if(Check(cityname,"Mumbai"))
             {
-                printf("\nEnterd city name is Mumbai ");
+                cout<<"\nEntered city name is Mumbai ";
+                ListNode Mumbai;
+                Mumbai.push(22000);
+                Mumbai.push(2200);
+                int total_price=Price_Calculator(Mumbai.gethead(),data);
+                int error =total_price*0.05;
+                int estimated_price=total_price-error;
                 sleep(1);
-                no_room=getrooms();
-                sleep(1);
-                int area_property=getarea();
-                sleep(1);
-                int price_per_squarefoot=22000;
-                int price_per_room=2200;
-                int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
-                int estimated_price=estimator(total_price);
-                printestimator(estimated_price,total_price);
-                city_valid=1;
+                cout<<"\nThe estimated price of the property wih the data is ₹"<<estimated_price<<" - "<<"₹"<<total_price;
+                valid_city=1;
             }
             else if(Check(cityname,"Chennai"))
             {
-                printf("\nEnterd city name is Chennai ");
+                cout<<"\nEntered city name is Chennai ";
+                ListNode Chennai;
+                Chennai.push(8543);
+                Chennai.push(855);
+                int total_price=Price_Calculator(Chennai.gethead(),data);
+                int error =total_price*0.05;
+                int estimated_price=total_price-error;
                 sleep(1);
-                no_room=getrooms();
-                sleep(1);
-                int area_property=getarea();
-                sleep(1);
-                int price_per_squarefoot=8543;
-                int price_per_room=855;
-                int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
-                int estimated_price=estimator(total_price);
-                printestimator(estimated_price,total_price);
-                city_valid=1;
+                cout<<"\nThe estimated price of the property wih the data is ₹"<<estimated_price<<" - "<<"₹"<<total_price;
+                valid_city=1;
             }
             else if(Check(cityname,"Bengaluru"))
             {
-                printf("\nEnterd city name is Bengluru ");
+                cout<<"\nEntered city name is Bengaluru ";
+                ListNode Bengaluru;
+                Bengaluru.push(22000);
+                Bengaluru.push(2200);
+                int total_price=Price_Calculator(Bengaluru.gethead(),data);
+                int error =total_price*0.05;
+                int estimated_price=total_price-error;
                 sleep(1);
-                no_room=getrooms();
-                sleep(1);
-                int area_property=getarea();
-                sleep(1);
-                int price_per_squarefoot=15200;
-                int price_per_room=1520;
-                int total_price=pricecalculator(price_per_squarefoot,price_per_room,area_property,no_room);
-                int estimated_price=estimator(total_price);
-                printestimator(estimated_price,total_price);
-                city_valid=1;
+                cout<<"\nThe estimated price of the property wih the data is ₹"<<estimated_price<<" - "<<"₹"<<total_price;
+                valid_city=1;
             }
-            else 
+            else
             {
-                printf("\nEnterd city name is %s ",cityname);
-                printf("\nEntered Name is wrong.\nPlease recheck and enter again");
+                cout<<"\nPlease Enter a Vaild Name. Try again";
+                continue;
             }
-        }    
-        printf("\nDo you want to continue(y/n) ");
-        fgets(choice,sizeof(choice),stdin);
-        choice[strcspn(choice,"\n")]='\0';
-        if(Check(choice,"N"))
-        {
-            printf("Exiting");
-            for(int i=0;i<5;i++)
+            int internalCondition=0;
+            while(internalCondition!=1)
             {
-                printf(".");
+                cout<<"\nDo you want continue (y/n) ";
+                cin>>Choice;
+                if(Check(Choice,"y")||Check(Choice,"Yes"))
+                {
+                    string internalCheck;
+                    cout<<"\nDo you want to continue with same data and only want to change the city (y/n) ";
+                    cin>>internalCheck;
+                    if(Check(internalCheck,"y")||Check(internalCheck,"Yes"))
+                    {
+                        valid_city=0;
+                    }
+                    internalCondition=1;
+                }
+                else if(Check(Choice,"No")||Check(Choice,"n"))
+                {
+                    cout<<"\nExiting";
+                    for(int i=0;i<5;i++)
+                    {
+                        cout<<".";
+                        sleep(1);
+                    }
+                    internalCondition=1;
+                }
+                else{
+                    cout<<"\nEnter a vaild answer ";
+                }
             }
-        }   
-    }while(!Check(choice,"N"));
+        }
+    }while (Check(Choice,"y") || Check(Choice,"Yes"));
     return 0;
 }
